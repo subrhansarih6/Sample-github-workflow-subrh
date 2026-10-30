@@ -1,0 +1,672 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mallify - Shopping Mall</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+    scroll-behavior: smooth;
+}
+
+body {
+    background: #f7f7fb;
+    color: #222;
+}
+
+header {
+    background: white;
+    padding: 18px 7%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 3px 15px #0001;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo {
+    font-size: 28px;
+    font-weight: bold;
+    color: #7545e8;
+}
+
+nav a {
+    text-decoration: none;
+    color: #333;
+    margin: 0 12px;
+    font-weight: bold;
+    transition: .3s;
+}
+
+nav a:hover {
+    color: #7545e8;
+}
+
+.cart-btn {
+    background: #7545e8;
+    color: white;
+    border: none;
+    padding: 11px 18px;
+    border-radius: 25px;
+    cursor: pointer;
+}
+
+.hero {
+    min-height: 400px;
+    padding: 70px 8%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(120deg, #e8ddff, #fce5f3);
+    overflow: hidden;
+}
+
+.hero-text {
+    animation: slideIn 1s ease;
+}
+
+.hero h1 {
+    font-size: 48px;
+    margin-bottom: 15px;
+    color: #32146b;
+}
+
+.hero p {
+    font-size: 17px;
+    margin-bottom: 25px;
+    color: #555;
+}
+
+.hero button {
+    padding: 14px 25px;
+    background: #7545e8;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: .3s;
+}
+
+.hero button:hover {
+    transform: scale(1.08);
+    background: #5428bb;
+}
+
+.hero img {
+    width: 40%;
+    max-width: 430px;
+    border-radius: 25px;
+    animation: float 3s infinite ease-in-out;
+}
+
+section {
+    padding: 55px 7%;
+}
+
+.heading {
+    text-align: center;
+    font-size: 30px;
+    margin-bottom: 30px;
+}
+
+.categories {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.category {
+    background: white;
+    padding: 25px;
+    text-align: center;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: .3s;
+    box-shadow: 0 4px 15px #00000008;
+}
+
+.category:hover {
+    transform: translateY(-8px);
+    background: #eee6ff;
+}
+
+.category span {
+    font-size: 40px;
+}
+
+.category h3 {
+    margin-top: 10px;
+}
+
+.search-box {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 25px;
+}
+
+.search-box input {
+    width: 350px;
+    padding: 13px;
+    border: 1px solid #ddd;
+    border-radius: 25px;
+    outline: none;
+    font-size: 15px;
+}
+
+.products {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 22px;
+}
+
+.product {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 20px #0000000c;
+    transition: .3s;
+    animation: appear .7s ease;
+}
+
+.product:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 25px #7545e830;
+}
+
+.product img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.product-info {
+    padding: 17px;
+}
+
+.product-info h3 {
+    margin-bottom: 8px;
+}
+
+.price {
+    color: #7545e8;
+    font-weight: bold;
+    font-size: 19px;
+    margin: 10px 0;
+}
+
+.product button {
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.add-btn {
+    background: #7545e8;
+    color: white;
+    width: 75%;
+}
+
+.like-btn {
+    background: #ffe8ee;
+    color: #e63969;
+    width: 20%;
+}
+
+.product button:hover {
+    opacity: .8;
+}
+
+.cart-panel {
+    display: none;
+    position: fixed;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 350px;
+    max-width: 100%;
+    background: white;
+    padding: 25px;
+    z-index: 200;
+    box-shadow: -5px 0 20px #0002;
+    overflow-y: auto;
+    animation: slideCart .4s ease;
+}
+
+.cart-panel h2 {
+    margin-bottom: 20px;
+}
+
+.close {
+    float: right;
+    cursor: pointer;
+    font-size: 25px;
+}
+
+.cart-item {
+    padding: 12px 0;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.cart-item button {
+    background: #ffe8e8;
+    color: red;
+    border: none;
+    padding: 5px 8px;
+    cursor: pointer;
+}
+
+.total {
+    margin-top: 25px;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.checkout {
+    margin-top: 20px;
+    width: 100%;
+    padding: 13px;
+    background: #7545e8;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+footer {
+    background: #24113f;
+    color: white;
+    text-align: center;
+    padding: 35px;
+}
+
+footer p {
+    margin-top: 10px;
+    color: #ddd;
+}
+
+.toast {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    background: #24113f;
+    color: white;
+    padding: 15px 22px;
+    border-radius: 10px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: .3s;
+    z-index: 300;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateX(-50px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+}
+
+@keyframes appear {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideCart {
+    from { transform: translateX(100%); }
+    to { transform: translateX(0); }
+}
+
+@media(max-width: 850px) {
+    .products, .categories {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .hero h1 {
+        font-size: 35px;
+    }
+}
+
+@media(max-width: 550px) {
+    header {
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    nav {
+        width: 100%;
+        text-align: center;
+    }
+
+    nav a {
+        margin: 5px;
+    }
+
+    .hero {
+        flex-direction: column;
+        text-align: center;
+        gap: 30px;
+    }
+
+    .hero img {
+        width: 90%;
+    }
+
+    .products, .categories {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">Mallify 🛍️</div>
+
+    <nav>
+        <a href="#home">Home</a>
+        <a href="#categories">Categories</a>
+        <a href="#products">Products</a>
+    </nav>
+
+    <button class="cart-btn" onclick="openCart()">
+        🛒 Cart (<span id="count">0</span>)
+    </button>
+</header>
+
+<div class="hero" id="home">
+    <div class="hero-text">
+        <h1>Welcome to Mallify!</h1>
+        <p>Discover amazing products at amazing prices.</p>
+        <button onclick="document.getElementById('products').scrollIntoView()">
+            Shop Now →
+        </button>
+    </div>
+
+    <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800"
+         alt="Shopping mall">
+</div>
+
+<section id="categories">
+    <h2 class="heading">Explore Categories</h2>
+
+    <div class="categories">
+        <div class="category" onclick="filterCategory('Fashion')">
+            <span>👕</span>
+            <h3>Fashion</h3>
+        </div>
+
+        <div class="category" onclick="filterCategory('Electronics')">
+            <span>🎧</span>
+            <h3>Electronics</h3>
+        </div>
+
+        <div class="category" onclick="filterCategory('Shoes')">
+            <span>👟</span>
+            <h3>Shoes</h3>
+        </div>
+
+        <div class="category" onclick="filterCategory('Accessories')">
+            <span>⌚</span>
+            <h3>Accessories</h3>
+        </div>
+    </div>
+</section>
+
+<section id="products">
+    <h2 class="heading">Our Products</h2>
+
+    <div class="search-box">
+        <input type="text" id="search"
+        placeholder="Search products..."
+        oninput="displayProducts()">
+    </div>
+
+    <div style="text-align:center;margin-bottom:25px">
+        <button onclick="filterCategory('All')">All Products</button>
+    </div>
+
+    <div class="products" id="productList"></div>
+</section>
+
+<div class="cart-panel" id="cartPanel">
+    <span class="close" onclick="closeCart()">×</span>
+    <h2>My Shopping Cart 🛒</h2>
+
+    <div id="cartItems"></div>
+
+    <div class="total">
+        Total: ₹<span id="total">0</span>
+    </div>
+
+    <button class="checkout" onclick="checkout()">
+        Checkout
+    </button>
+</div>
+
+<footer>
+    <h2>Mallify Shopping Mall</h2>
+    <p>Your happiness, our priority.</p>
+    <p>© 2026 Mallify. All Rights Reserved.</p>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+
+const products = [
+    {
+        name: "Stylish T-Shirt",
+        category: "Fashion",
+        price: 599,
+        image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=500"
+    },
+    {
+        name: "Wireless Headphones",
+        category: "Electronics",
+        price: 1499,
+        image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500"
+    },
+    {
+        name: "Running Shoes",
+        category: "Shoes",
+        price: 1999,
+        image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500"
+    },
+    {
+        name: "Smart Watch",
+        category: "Accessories",
+        price: 2499,
+        image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500"
+    },
+    {
+        name: "Casual Shirt",
+        category: "Fashion",
+        price: 899,
+        image: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=500"
+    },
+    {
+        name: "Digital Camera",
+        category: "Electronics",
+        price: 4999,
+        image: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=500"
+    },
+    {
+        name: "Sports Shoes",
+        category: "Shoes",
+        price: 1799,
+        image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500"
+    },
+    {
+        name: "Sunglasses",
+        category: "Accessories",
+        price: 799,
+        image: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=500"
+    }
+];
+
+let cart = [];
+let selectedCategory = "All";
+
+function displayProducts() {
+    const list = document.getElementById("productList");
+    const search = document.getElementById("search").value.toLowerCase();
+
+    const filtered = products.filter(p =>
+        (selectedCategory === "All" || p.category === selectedCategory) &&
+        p.name.toLowerCase().includes(search)
+    );
+
+    list.innerHTML = "";
+
+    if (filtered.length === 0) {
+        list.innerHTML = "<p>No products found.</p>";
+        return;
+    }
+
+    filtered.forEach(p => {
+        const index = products.indexOf(p);
+
+        list.innerHTML += `
+            <div class="product">
+                <img src="${p.image}" alt="${p.name}">
+                <div class="product-info">
+                    <h3>${p.name}</h3>
+                    <p>${p.category}</p>
+                    <div class="price">₹${p.price}</div>
+                    <button class="add-btn" onclick="addToCart(${index})">
+                        Add to Cart
+                    </button>
+                    <button class="like-btn" onclick="likeProduct()">
+                        ♡
+                    </button>
+                </div>
+            </div>
+        `;
+    });
+}
+
+function filterCategory(category) {
+    selectedCategory = category;
+    displayProducts();
+    document.getElementById("products").scrollIntoView();
+}
+
+function addToCart(index) {
+    const product = products[index];
+    const existing = cart.find(item => item.name === product.name);
+
+    if (existing) {
+        existing.quantity++;
+    } else {
+        cart.push({...product, quantity: 1});
+    }
+
+    updateCart();
+    showToast("Product added to cart!");
+}
+
+function updateCart() {
+    let total = 0;
+    let count = 0;
+
+    document.getElementById("cartItems").innerHTML = "";
+
+    cart.forEach((item, index) => {
+        total += item.price * item.quantity;
+        count += item.quantity;
+
+        document.getElementById("cartItems").innerHTML += `
+            <div class="cart-item">
+                <div>
+                    <b>${item.name}</b><br>
+                    ₹${item.price} × ${item.quantity}
+                    <br>
+                    <button onclick="changeQuantity(${index},-1)">−</button>
+                    <button onclick="changeQuantity(${index},1)">+</button>
+                </div>
+                <button onclick="removeItem(${index})">Remove</button>
+            </div>
+        `;
+    });
+
+    document.getElementById("total").innerText = total;
+    document.getElementById("count").innerText = count;
+}
+
+function changeQuantity(index, amount) {
+    cart[index].quantity += amount;
+
+    if (cart[index].quantity <= 0) {
+        cart.splice(index, 1);
+    }
+
+    updateCart();
+}
+
+function removeItem(index) {
+    cart.splice(index, 1);
+    updateCart();
+    showToast("Product removed!");
+}
+
+function openCart() {
+    document.getElementById("cartPanel").style.display = "block";
+}
+
+function closeCart() {
+    document.getElementById("cartPanel").style.display = "none";
+}
+
+function likeProduct() {
+    showToast("Added to your wishlist! ❤️");
+}
+
+function checkout() {
+    if (cart.length === 0) {
+        showToast("Your cart is empty!");
+        return;
+    }
+
+    showToast("Demo checkout successful!");
+    cart = [];
+    updateCart();
+    closeCart();
+}
+
+function showToast(message) {
+    const toast = document.getElementById("toast");
+    toast.innerText = message;
+    toast.classList.add("show");
+
+    setTimeout(() => {
+        toast.classList.remove("show");
+    }, 2000);
+}
+
+displayProducts();
+
+</script>
+
+</body>
+</html>
